@@ -1,5 +1,5 @@
 ##Ruby Chess
 Chess program that features
-	Move verification
-	basic AI
+   Move verification
+   basic AI
 
