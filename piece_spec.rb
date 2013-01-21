@@ -24,7 +24,7 @@ describe Piece do
     describe '#expand' do
         it 'returns list of possible moves for each white pawn from initial board' do
             97.upto(104) do |file|
-                piece = Piece.new 'w','p', file.chr+'2'
+                piece = Pawn.new 'w', file.chr+'2'
                 piece.expand(PLAIN_BOARD).collect { |move| move[:notation] }.sort.should eq [file.chr + '3', file.chr + '4']
             end
         end

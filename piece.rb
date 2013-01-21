@@ -1,10 +1,5 @@
 #piece.rb
 
-# def p2s(x,y)
-#     # returns square designation given coordinates
-#     # allows for invalid conversion, which need to be filtered out at the end
-#     chr(96+x)+str(y)
-# end
 
 class Piece
     attr_accessor :color, :type, :square, :x, :y
@@ -38,8 +33,10 @@ class Piece
         end
     end
 
-    def expand(board_state)
-        p ''
+    def p2s(dx,dy)
+        # returns square designation given coordinates
+        # allows for invalid conversion, which need to be filtered out at the end
+        (96 + @x + dx).chr + (@y + dy).to_s
     end
 end
 
@@ -54,6 +51,7 @@ class Pawn < Piece
     end
 
     def move(board_state)
+        result = []
         if @color == 'w' then direction = 1 else direction = -1 end
         if (@y == 2 or @y == 7) and not board_state[p2s(0, 1 * direction)] and not board_state[p2s(0, 2 * direction)]
             result << {action:'m', from: @square, to: p2s(0, 1 * direction), notation: p2s(0, 1 * direction)}
@@ -62,9 +60,11 @@ class Pawn < Piece
         # the above might end outside of the board, which can be filtered later
         dispalacement = p2s(0, 1*direction)
         if @y>2 and @y<7 and not board_state[displacement] then result << {action:'m', from: @square, to: displacement, notation: displacement} end
+        result.select { |expansion| expansion[:to] != nil } #excludes out of the board expansions
     end
 
     def promote(board_state)
+        result = []
         if @color == 'w' and @y==7
             if not board_state[p2s(0,1)]
                 result += ['R','N','B','Q'].collect { |promo| {action: 'p', from: @square, to: p2s(0,1), notation: p2s(0,1) + promo} }
@@ -82,9 +82,11 @@ class Pawn < Piece
                 result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(-1,-1), notation: p2s(-1,-1) + promo} }
             end
         end
+        result.select { |expansion| expansion[:to] != nil } #excludes out of the board expansions
     end
 
     def take(board_state)
+        result = []
         if @color == 'w'
             # captures left
             displacement = p2s(-1, 1)
@@ -111,6 +113,11 @@ class Pawn < Piece
             end
             if @y==4 and not board_state[displacement] and board_state[p2s(1,0)]=='wp' then result << {action: 'e', from: @square, tp: displacement, notation: @square[0] + CAPTURE_SIGN + displacement} end
         end
+        result.select { |expansion| expansion[:to] != nil } #excludes out of the board expansions
+    end
+
+    def expand(board_state)
+        move(board_state) + promote(board_state) + take(board_state)
     end
 end
 
@@ -125,7 +132,7 @@ class Knight < Piece
     end
 
     def expand(board_state)
-
+        result = []
         [@x+1, @y-2, @x+2, @y-1, @x+2, @y+1, @x+1, @y+2, @x-1, @y-2, @x-2, @y-1, @x-2, @y+1, @x-1, @y+2].each do |x,y|
             if not board_state[p2s(x,y)]
                 result << {action: 'm', from: @square, to: p2s(x,y), notation: 'N'+p2s(x,y)}
@@ -133,6 +140,7 @@ class Knight < Piece
                 if board_state[p2s(x,y)][0] != @color then result << {action: 't', from: @square, to: p2s(x,y), notation: 'Nx'+p2s(x,y)} end
             end
         end
+        result.select { |expansion| expansion[:to] != nil } #excludes out of the board expansions
     end
 end
 
@@ -148,7 +156,7 @@ class Other < Piece
     end
 
     def expand(board_state)
-
+        result = []
         if @type == 'k'
             maxrange = 2
         else
