@@ -189,9 +189,9 @@ class Piece
         if ['q','k','b','r'].include? @type
             #NE=SE=SW=NW=N=E=S=W=False # flags for each direction
             if @type == 'k'
-                maxrange = 2
+                maxrange = 1
             else
-                maxrange = 8
+                maxrange = 7
             end
 
             directions = [
@@ -220,13 +220,19 @@ class Piece
                 # {name: 'NW', flag: false, disp_x: :-, disp_y: :+},
                 # {name: 'N', flag: false, disp_x: nil, disp_y: :+},
             ]
-            1.up_to maxrange do |i|
+            1.upto maxrange do |i|
                 directions.each do |direction|
                     if not direction[:flag] and direction[:types].include? @type
-                        if not board_state[p2s(i*direction[:displacement])]
-                            result << {action: 'm', from: @square, to: p2s(displacement), notation: @type.upper + p2s(displacement)}
+                        displacement = direction[:displacement].map { |disp| disp*i }
+                        if board_state.has_key?(p2s(displacement))
+                            if not board_state[p2s(displacement)]
+                                result << {action: 'm', from: @square, to: p2s(displacement), notation: @type.upcase + p2s(displacement)}
+                            else
+                                direction[:flag] = true
+                                if board_state[p2s(displacement)][0] != @color then result << {action: 't', from: @square, to: p2s(displacement), notation: @type.upcase + CAPTURE_SIGN + p2s(displacement)} end
+                            end
                         else
-                            result << {action: 't', from: @square, to: p2s(displacement), notation: @type.upper + CAPTURE_SIGN + p2s(displacement)}
+                            direction[:flag] = true
                         end
                     end
                 end
@@ -308,11 +314,11 @@ class Piece
 
         if @type == 'k'
             if @color == 'w' and @square == 'e1' and board_state['h1']=='wr' and not board_state['f1'] and not board_state['g1'] then result << {action: 'c', from: @square, to: p2s(2,0), notation: 'O-O'} end
-            if @color == 'b' and self.sq == 'e8' and board_state['h8']=='br' and not board_state['f8'] and not board_state['g8'] then result << {action: 'c', from: @square, to: p2s(2,0), notation: 'O-O'} end
-            if @color == 'w' and self.sq == 'e1' and board_state['a1']=='wr' and not board_state['b1'] and not board_state['c1'] and not board_state['d1']
+            if @color == 'b' and @square == 'e8' and board_state['h8']=='br' and not board_state['f8'] and not board_state['g8'] then result << {action: 'c', from: @square, to: p2s(2,0), notation: 'O-O'} end
+            if @color == 'w' and @square == 'e1' and board_state['a1']=='wr' and not board_state['b1'] and not board_state['c1'] and not board_state['d1']
                 result << {action: 'c', from: @square, to: p2s(-2,0), notation: 'O-O-O'}
             end
-            if @color == 'b' and self.sq == 'e8' and board_state['a8']=='br' and not board_state['b8'] and not board_state['c8'] and not board_state['d8']
+            if @color == 'b' and @square == 'e8' and board_state['a8']=='br' and not board_state['b8'] and not board_state['c8'] and not board_state['d8']
                 result << {action: 'c', from: @square, to: p2s(-2,0), notation: 'O-O-O'}
             end
         end
