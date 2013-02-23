@@ -10,14 +10,7 @@ PLAIN_BOARD = {'a8' => 'br', 'b8' => nil, 'c8' => 'bb', 'd8' => 'bq', 'e8' => 'b
                  'a2' => 'wp', 'b2' => 'wp', 'c2' => 'wp', 'd2' => 'wp', 'e2' => 'wp', 'f2' => 'wp', 'g2' => 'wp', 'h2' => 'wp',
                  'a1' => 'wr', 'b1' => 'wn', 'c1' => 'wb', 'd1' => 'wq', 'e1' => 'wk', 'f1' => 'wb', 'g1' => 'wn', 'h1' => 'wr',}
 
-TEST1_BOARD = {'a8' => 'br', 'b8' => 'bn', 'c8' => 'bb', 'd8' => 'bq', 'e8' => 'bk', 'f8' => 'bb', 'g8' => 'bn', 'h8' => 'br',
-                 'a7' => 'bp', 'b7' => 'bp', 'c7' => 'bp', 'd7' => 'bp', 'e7' => 'bp', 'f7' => 'bp', 'g7' => 'bp', 'h7' => 'bp',
-                 'a6' => nil, 'b6' => nil, 'c6' => nil, 'd6' => nil, 'e6' => nil, 'f6' => nil, 'g6' => nil, 'h6' => nil,
-                 'a5' => nil, 'b5' => nil, 'c5' => nil, 'd5' => nil, 'e5' => nil, 'f5' => nil, 'g5' => nil, 'h5' => nil,
-                 'a4' => nil, 'b4' => nil, 'c4' => nil, 'd4' => nil, 'e4' => nil, 'f4' => nil, 'g4' => nil, 'h4' => nil,
-                 'a3' => nil, 'b3' => nil, 'c3' => nil, 'd3' => nil, 'e3' => nil, 'f3' => nil, 'g3' => nil, 'h3' => nil,
-                 'a2' => 'wp', 'b2' => 'wp', 'c2' => 'wp', 'd2' => 'wp', 'e2' => 'wp', 'f2' => 'wp', 'g2' => 'wp', 'h2' => 'wp',
-                 'a1' => 'wr', 'b1' => 'wn', 'c1' => 'wb', 'd1' => 'wq', 'e1' => 'wk', 'f1' => 'wb', 'g1' => 'wn', 'h1' => 'wr',}
+TEST1_BOARD = {'h8' => nil, 'h2' => nil, 'h3' => nil, 'h1' => 'wr', 'h6' => nil, 'h7' => 'wp', 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => nil, 'd7' => 'bp', 'd4' => nil, 'd5' => nil, 'd2' => 'wp', 'd3' => nil, 'd1' => 'wq', 'g7' => 'bp', 'g6' => nil, 'g5' => 'wp', 'g4' => nil, 'g3' => nil, 'g2' => nil, 'g1' => nil, 'g8' => 'bn', 'c8' => 'bb', 'c3' => 'bn', 'c2' => 'wp', 'c1' => 'wb', 'c7' => 'bp', 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => 'wb', 'f2' => 'wp', 'f3' => nil, 'f4' => nil, 'f5' => 'bp', 'f6' => nil, 'f7' => nil, 'f8' => 'bb', 'b4' => nil, 'b5' => nil, 'b6' => nil, 'b7' => 'bp', 'b1' => 'wn', 'b2' => 'wp', 'b3' => nil, 'b8' => nil, 'a1' => 'wr', 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => 'bk', 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => 'wn', 'e7' => 'bp', 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => 'wp', 'a4' => nil}
 
 
 describe Piece do
@@ -27,6 +20,12 @@ describe Piece do
                 piece = Piece.new 'w','p', file.chr+'2'
                 piece.expand(PLAIN_BOARD).collect { |move| move[:notation] }.sort.should eq [file.chr + '3', file.chr + '4']
             end
+        end
+
+        it 'returns list of possible moves for pawn from specific position' do
+            #pawn capture right
+            piece = Piece.new 'w','p', 'b2'
+            piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq ['b4', 'b3', 'bxc3'].sort
         end
     end
 
