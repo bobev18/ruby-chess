@@ -83,18 +83,20 @@ class Piece
                 result << { action: 't', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)}
             end
             if @y==7 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b'
-                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: p2s(displacement) + promo} }
+                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement),  notation: @square[0] + CAPTURE_SIGN + p2s(displacement) + promo} }
             end
-            if @y==5 and not board_state[p2s(displacement)] and board_state[p2s(@x-1,@y)]=='bp' then result << {action: 'e', from: @square, tp: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
+            if @y==5 and not board_state[p2s(displacement)] and board_state[p2s(-1,0)]=='bp' then result << {action: 'e', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
+
             # captures right
             displacement = 1, 1
             if @y>=2 and @y<7 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b'
                 result << { action: 't', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)}
             end
             if @y==7 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b'
-                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: p2s(displacement) + promo} }
+                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement) + promo} }
             end
-            if @y==5 and not board_state[p2s(displacement)] and board_state[p2s(@x+1,@y)]=='bp' then result << {action: 'e', from: @square, tp: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
+            if @y==5 and not board_state[p2s(displacement)] and board_state[p2s(+1,0)]=='bp' then result << {action: 'e', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
+
 
             # if @y>=2 and @y<7 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b' then result.append(('t',p2s(displacement),self.sq[0]+CAPTURE_SIGN+p2s(displacement))) end
             # if @y==7 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b' end result.extend([ ('+',p2s(displacement),p2s(displacement)+z_) for z_ in ['R','N','B','Q']]) end
@@ -115,18 +117,18 @@ class Piece
                 result << { action: 't', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)}
             end
             if @y==2 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b'
-                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: p2s(displacement) + promo} }
+                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement) + promo} }
             end
-            if @y==4 and not board_state[p2s(displacement)] and board_state[p2s(@x-1,@y)]=='bp' then result << {action: 'e', from: @square, tp: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
+            if @y==4 and not board_state[p2s(displacement)] and board_state[p2s(@x-1,@y)]=='bp' then result << {action: 'e', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
             # captures right
             displacement = 1, -1
             if @y<=7 and @y>2 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b'
                 result << { action: 't', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)}
             end
             if @y==2 and board_state[p2s(displacement)] and board_state[p2s(displacement)][0]=='b'
-                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: p2s(displacement) + promo} }
+                result += ['R','N','B','Q'].collect { |promo| {action: '+', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement) + promo} }
             end
-            if @y==4 and not board_state[p2s(displacement)] and board_state[p2s(@x+1,@y)]=='bp' then result << {action: 'e', from: @square, tp: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
+            if @y==4 and not board_state[p2s(displacement)] and board_state[p2s(@x+1,@y)]=='bp' then result << {action: 'e', from: @square, to: p2s(displacement), notation: @square[0] + CAPTURE_SIGN + p2s(displacement)} end
 
 
             # displacement = @x,@y-2
@@ -146,7 +148,7 @@ class Piece
         end
 
         if @type == 'n'
-            [@x+1, @y-2, @x+2, @y-1, @x+2, @y+1, @x+1, @y+2, @x-1, @y-2, @x-2, @y-1, @x-2, @y+1, @x-1, @y+2].each do |x,y|
+            [+1, -2, +2, -1, +2, +1, +1, +2, -1, -2, -2, -1, -2, +1, -1, +2].each_slice(2) do |x,y|
                 if not board_state[p2s(x,y)]
                     result << {action: 'm', from: @square, to: p2s(x,y), notation: 'N'+p2s(x,y)}
                 else

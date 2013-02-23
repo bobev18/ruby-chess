@@ -26,6 +26,20 @@ describe Piece do
             #pawn capture right
             piece = Piece.new 'w','p', 'b2'
             piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq ['b4', 'b3', 'bxc3'].sort
+            #pawn capture right
+            piece = Piece.new 'w','p', 'd2'
+            piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq ['d4', 'd3', 'dxc3'].sort
+            #blocked pawn
+            piece = Piece.new 'w','p', 'c2'
+            piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq []
+            piece = Piece.new 'w','p', 'e2'
+            piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq ['e3']
+            #en passant no lastmove match, then with lastmovematch
+            piece = Piece.new 'w','p', 'g5'
+            piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq ['g6','gxf6']
+            #promote pawn h7
+            piece = Piece.new 'w','p', 'h7'
+            piece.expand(TEST1_BOARD).collect { |move| move[:notation] }.sort.should eq ['h8R','h8N','h8B','h8Q','hxg8R','hxg8N','hxg8B','hxg8Q'].sort
         end
     end
 
