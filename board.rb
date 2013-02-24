@@ -140,16 +140,17 @@ BMAP = {
 #     except KeyError:
 #         return 'n/a'
 
-# class MoveException(Exception):
+class MoveException < StandardError
+end
 #     def __init__(self, *args):
 #         # *args is used to get a list of the parameters passed in
 #         self.args = [a for a in args]
 
 
 class Board
-    attr_accessor :board, :whites, :blacks, :backtrack, :white_king, :black_king, :white_in_check, :black_in_check
+    attr_accessor :board, :whites, :blacks, :backtrack, :white_king, :black_king, :white_in_check, :black_in_check, :debuglevel
 
-    def initialize(board_state=nil, winch=false, binch=false)
+    def initialize(board_state=nil, winch=false, binch=false, debuglevel=0)
         @whites = []                # list of white pieces
         @blacks = []                # list of black pieces
         @backtrack = []             # tracks history of board states - used to catch stalemate by repetition
@@ -157,10 +158,30 @@ class Board
         @black_king = nil           # the position of the black king
         @white_in_check = winch     # true if white are in check
         @black_in_check = binch     # true if black are in check
+        @debuglevel = debuglevel
         if not board_state
             @board  = EMPTYBOARDINIT.clone
         else
             piecefy(board_state)
+        end
+    end
+
+    def debug(message = '', level = nil)
+        if level then @debuglevel = level end
+        if @debuglevel>0
+            if message != ''
+                puts message
+            else
+                puts "@whites #{@whites}"
+                puts "@blacks #{@vlacks}"
+                puts "@backtrack #{@backtrack}"
+                puts "@white_king #{@white_king}"
+                puts "@black_king #{@black_king}"
+                puts "@white_in_check #{@white_in_check}"
+                puts "@black_in_check #{@black_in_check}"
+                puts "@board #{show}"
+                puts "@debuglevel #{@debuglevel}"
+            end
         end
     end
 
@@ -200,7 +221,7 @@ class Board
     #     end
     # end
     def hashit
-        @board.values.map { |value| " "  ? (not value) : value  }.join
+        @board.values.map { |value| not value ? " " : value  }.join
     end
 
     def show
@@ -217,6 +238,76 @@ class Board
             result += "\n" # -- -- -- -- -- -- -- --\n"
         end
         result
+    end
+
+    def piece_by_sq(sq)
+        # returns the object at location SQ
+        fullset.select do |p|
+            debug(message = "#{p},#{p.square==sq}")
+            p.square == sq ? p : nil
+        end.compact[0]
+    end
+
+    def relocate(piece_or_sq,to_sq)
+        # relocates piece P (piece at SQ) to an empty square TO_SQ
+        if piece_or_sq.instance_of? String
+            piece = piece_by_sq(piece_or_sq)
+            orriginal_sq = piece_or_sq # will be needed to remove the piece from that sq
+        else
+            piece = piece_or_sq
+            orriginal_sq = piece.square
+        end
+
+        if piece_by_sq(to_sq)
+            msg = "Are you blind - there is another piece at that spot: #{piece_by_sq(to_sq).to_s}"
+            debug(message = "#{msg}\n>>> board\n #{show} \n>>> piece: #{piece.to_s} \n>>> orriginal_sq: #{orriginal_sq}\n>>> to sq: #{to_sq}")
+            raise MoveException, msg
+        end
+
+        if not piece
+             msg = "Trying to move the air at #{piece_or_sq}"
+            raise MoveException, msg
+        end
+
+        debug(message = ">>> board:\n#{show}\n>>> piece: #{piece}\n>>> orriginal_sq: #{orriginal_sq}\n>>> to sq: #{to_sq}")
+
+        #the actual relocation
+        piece.square = to_sq
+        piece.x = piece.square[0].ord-96
+        piece.y = piece.square[1].to_i
+
+        #the following code covers for the boardify:
+        @board[to_sq] = piece.color + piece.type
+        @board[orriginal_sq] = nil
+    end
+
+     def take(piece_or_sq)
+        #removes piece P (piece at SQ) from the board
+        if piece_or_sq.instance_of? String
+            piece = piece_by_sq(piece_or_sq)
+        else
+            piece = piece_or_sq
+        end
+
+        if not piece
+            msg = "Trying to move the air at #{piece_or_sq}"
+            debug(msg)
+            debug
+            raise MoveException, msg
+        end
+
+        #the following code covers for the boardify:
+        @board[piece.square] = nil
+
+        if piece.color == 'w'
+            @whites.delete_at(@whites.index(piece))
+        else
+            @blacks.delete_at(@blacks.index(piece))
+        end
+
+        #del(piece) #? needed?
+        # if we del piece, and then undo by creating new one, some iterations over lists of pieces break
+        # it's better to keep the piece reference in the undo data
     end
 end
 

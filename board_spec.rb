@@ -22,6 +22,7 @@ describe Board do
 "
         end
     end
+
     describe '#piecefy' do
         it 'generates board with set of piece objects given specific position' do
             zboard = Board.new
@@ -38,35 +39,51 @@ describe Board do
 "
         end
     end
+
+    describe '#piece_by_sq' do
+        it 'returns the object at specific board location' do
+            zboard = Board.new
+            zboard.initialset
+            zpiece = zboard.piece_by_sq('e2')
+            zpiece.to_s.should eq 'wp@e2'
+            zpiece.square.should eq 'e2'
+        end
+    end
+
+    describe '#relocate' do
+        it 'relocates piece to an empty square TO_SQ' do
+            zboard = Board.new
+            zboard.initialset
+            zboard.relocate('b8','c3')
+            zboard.piece_by_sq('c3').to_s.should eq "bn@c3"
+            zboard.relocate('g1','e4')
+            zboard.piece_by_sq('e4').to_s.should eq 'wn@e4'
+            zboard.relocate('g2','g5')
+            zboard.piece_by_sq('g5').to_s.should eq 'wp@g5'
+            zboard.relocate(zboard.piece_by_sq('f7'),'f5')
+            zboard.piece_by_sq('f5').to_s.should eq 'bp@f5'
+        end
+    end
+
+    describe '#take' do
+        it 'removes piece from the board' do
+            zboard = Board.new
+            zboard.initialset
+            zboard.take(zboard.piece_by_sq('h7'))
+            zboard.piece_by_sq('h7').should eq nil
+            zboard.take(zboard.piece_by_sq('h8'))
+            zboard.relocate(zboard.piece_by_sq('h2'),'h7') # the relocate here is an attempt to break something with the take
+            zboard.piece_by_sq('h7').to_s.should eq 'wp@h7'
+            zboard.piece_by_sq('h8').should eq nil
+        end
+    end
+
 end
 
 
-#     def test_piecebypos_n_posbypiece_n_repr(self):
-#         self.zboard.initialset()
-#         zpiece = self.zboard.piece_by_sq('e2')
-#         self.assertEqual('wp@e2',repr(zpiece))
-#         zpos = zpiece.sq
-#         self.assertEqual('e2',zpos)
 
 #     def test_moves_n_takes(self):
 #         self.zboard.initialset()
-#         self.zboard.relocate('b8','c3')
-#         #print(self.zboard.show())
-#         self.zboard.relocate('g1','e4')
-#         self.zboard.relocate('g2','g5')
-#         self.zboard.relocate(self.zboard.piece_by_sq('f7'),'f5')
-#         self.zboard.take(self.zboard.piece_by_sq('h7'))
-#         self.assertEqual(None,self.zboard.piece_by_sq('h7')) # have to assert before moving another piece over to the same square
-#         self.zboard.take(self.zboard.piece_by_sq('h8'))
-#         self.zboard.relocate(self.zboard.piece_by_sq('h2'),'h7')
-
-#         #print(self.zboard.show())
-#         self.assertEqual('bn@c3',repr(self.zboard.piece_by_sq('c3')))
-#         self.assertEqual('wn@e4',repr(self.zboard.piece_by_sq('e4')))
-#         self.assertEqual('wp@g5',repr(self.zboard.piece_by_sq('g5')))
-#         self.assertEqual('bp@f5',repr(self.zboard.piece_by_sq('f5')))
-#         self.assertEqual(None,self.zboard.piece_by_sq('h8'))
-#         self.assertEqual('wp@h7',repr(self.zboard.piece_by_sq('h7')))
 
 
 

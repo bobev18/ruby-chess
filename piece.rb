@@ -1,33 +1,34 @@
 #piece.rb
 
 class Piece
-    attr_accessor :color, :type, :square, :x, :y
+    attr_accessor :color, :type, :square, :x, :y, :debuglevel
     CAPTURE_SIGN = 'x'
 
-    def initialize(color, type, square, debug=nil)
+    def initialize(color, type, square, debuglevel=0)
         # color=['w','b'];  type=['p','r','n','b','q','k']; sq = [a1..h8]
         @color = color
         @type = type
         @square = square
         @x = @square[0].ord-96
         @y = @square[1].to_i
-        @debug = debug
+        @debuglevel = debuglevel
     end
 
     def to_s
         @color + @type + '@' + @square
     end
 
-    def debug(command = '', level = 1)
-        if @debug
-            if command != ''
-                exec(command)
+    def debug(message = '', level = nil)
+        if level then @debuglevel = level end
+        if @debuglevel>0
+            if message != ''
+                puts message
             else
-                p '@color', @color
-                p '@type', @type
-                p '@square', @square
-                p '@x, @y', @x, @y
-                p 'debug level', level
+                puts "@color #{@color}"
+                puts "@type #{@type}"
+                puts "@square #{@square}"
+                puts "@x,@y #{@x},#{@y}"
+                puts "@debuglevel #{@debuglevel}"
             end
         end
     end
@@ -48,7 +49,7 @@ class Piece
 
         #white pawn:
         if @color == 'w' and @type == 'p'
-            debug()
+            debug
             if @y==2 and not board_state[p2s(0,1)] and not board_state[p2s(0,2)] then result << {action:'m', from: @square, to: p2s(0,2), notation: p2s(0,2)} end
             displacement = 0, 1
             if @y>=2 and @y<7 and not board_state[p2s(displacement)] then result << {action:'m', from: @square, to: p2s(displacement), notation: p2s(displacement)} end
@@ -77,7 +78,7 @@ class Piece
         end
 
         if @color == 'b' and @type == 'p'
-            debug()
+            debug
             if @y==7 and not board_state[p2s(0,-1)] and not board_state[p2s(0,-2)] then result << {action:'m', from: @square, to: p2s(0,-2), notation: p2s(0,-2)} end
             displacement = 0, -1
             if @y<=7 and @y>2 and not board_state[p2s(displacement)] then result << {action:'m', from: @square, to: p2s(displacement), notation: p2s(displacement)} end
