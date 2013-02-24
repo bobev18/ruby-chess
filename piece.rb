@@ -161,7 +161,6 @@ class Piece
                 result << {action: 'c', from: @square, to: p2s(-2,0), notation: 'O-O-O'}
             end
         end
-        puts "results #{result}"
-        result.select { |expansion| expansion[:to] != nil } #excludes out of the board expansions
+        result.select { |expansion| expansion[:to] != nil } #excludes out of the board expansions and also converts list of dicts to list of the ":to" values
     end
 end

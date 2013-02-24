@@ -99,3 +99,31 @@ describe Piece do
         end
     end
 end
+
+#         #castling # no check validation yet
+#         self.zboard.take(self.zboard.piece_by_sq('b1'))
+#         self.zboard.take(self.zboard.piece_by_sq('c1'))
+#         self.zboard.take(self.zboard.piece_by_sq('d1'))
+#         self.zboard.take(self.zboard.piece_by_sq('f1'))
+#         self.zboard.take(self.zboard.piece_by_sq('c8'))
+#         self.zboard.take(self.zboard.piece_by_sq('d8'))
+#         self.zboard.take(self.zboard.piece_by_sq('f8'))
+#         self.zboard.take(self.zboard.piece_by_sq('g8'))
+#         #print(self.zboard.board)
+#         #print('\n'+self.zboard.show())
+#         """
+#         |br|  |  |  |bk|  |  |  |
+#         |  |wr|  |bb|  |  |  |  |
+#         |  |  |  |  |  |  |  |  |
+#         |  |wb|  |  |bq|  |  |  |
+#         |  |  |  |  |wn|  |  |  |
+#         |  |  |bn|  |  |  |  |  |
+#         |  |  |  |  |  |  |  |  |
+#         |wr|  |  |  |wk|  |  |wr|
+#         """
+#         #king at e8
+#         self.assertTrue(('c','c8','O-O-O') in self.zboard.piece_by_sq('e8').expand(self.zboard.board))
+#         # O-O not expanded as per Rook missing from h8
+#         #king at e1
+#         self.assertTrue(('c','c1','O-O-O') in self.zboard.piece_by_sq('e1').expand(self.zboard.board))
+#         self.assertTrue(('c','g1','O-O') in self.zboard.piece_by_sq('e1').expand(self.zboard.board))
