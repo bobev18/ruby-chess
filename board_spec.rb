@@ -1,4 +1,5 @@
 #board_spec.rb
+require "rspec"
 require './board.rb'
 
 TEST_BOARD1 = {'h8' => nil, 'h2' => nil, 'h3' => nil, 'h1' => 'wr', 'h6' => nil, 'h7' => 'wp', 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => nil, 'd7' => 'bp', 'd4' => nil, 'd5' => nil, 'd2' => 'wp', 'd3' => nil, 'd1' => 'wq', 'g7' => 'bp', 'g6' => nil, 'g5' => 'wp', 'g4' => nil, 'g3' => nil, 'g2' => nil, 'g1' => nil, 'g8' => 'bn', 'c8' => 'bb', 'c3' => 'bn', 'c2' => 'wp', 'c1' => 'wb', 'c7' => 'bp', 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => 'wb', 'f2' => 'wp', 'f3' => nil, 'f4' => nil, 'f5' => 'bp', 'f6' => nil, 'f7' => nil, 'f8' => 'bb', 'b4' => nil, 'b5' => nil, 'b6' => nil, 'b7' => 'bp', 'b1' => 'wn', 'b2' => 'wp', 'b3' => nil, 'b8' => nil, 'a1' => 'wr', 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => 'bk', 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => 'wn', 'e7' => 'bp', 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => 'wp', 'a4' => nil}
@@ -54,14 +55,17 @@ describe Board do
         it 'relocates piece to an empty square TO_SQ' do
             zboard = Board.new
             zboard.initialset
-            zboard.relocate('b8','c3')
+            zboard.relocate('b8', 'c3')
             zboard.piece_by_sq('c3').to_s.should eq "bn@c3"
-            zboard.relocate('g1','e4')
+            zboard.relocate('g1', 'e4')
             zboard.piece_by_sq('e4').to_s.should eq 'wn@e4'
-            zboard.relocate('g2','g5')
+            zboard.relocate('g2', 'g5')
             zboard.piece_by_sq('g5').to_s.should eq 'wp@g5'
-            zboard.relocate(zboard.piece_by_sq('f7'),'f5')
+            zboard.relocate(zboard.piece_by_sq('f7'), 'f5')
             zboard.piece_by_sq('f5').to_s.should eq 'bp@f5'
+            # puts zboard.show
+            expect { zboard.relocate(zboard.piece_by_sq('f5'), 'g5') }.to raise_error(MoveException)#,"Trying to move the air at h3")
+            expect { zboard.relocate('a3', 'a4') }.to raise_error(MoveException)#,"Trying to move the air at h3")
         end
     end
 
@@ -69,12 +73,29 @@ describe Board do
         it 'removes piece from the board' do
             zboard = Board.new
             zboard.initialset
-            zboard.take(zboard.piece_by_sq('h7'))
+            zboard.take('h7')
             zboard.piece_by_sq('h7').should eq nil
             zboard.take(zboard.piece_by_sq('h8'))
-            zboard.relocate(zboard.piece_by_sq('h2'),'h7') # the relocate here is an attempt to break something with the take
+            zboard.relocate(zboard.piece_by_sq('h2'), 'h7') # the relocate here is an attempt to break something with the take
             zboard.piece_by_sq('h7').to_s.should eq 'wp@h7'
             zboard.piece_by_sq('h8').should eq nil
+            expect { zboard.take(zboard.piece_by_sq('h3')) }.to raise_error(MoveException)#,"Trying to move the air at h3")
+        end
+    end
+
+    describe '#add' do
+        it 'adds piece to the board' do
+            zboard = Board.new
+            zboard.add('b5', 'w', 'b')
+            zboard.add('e5', 'b', 'q')
+            zboard.add('bb@d7')
+            zboard.add('wr@b7')
+            # puts zboard.show
+            zboard.piece_by_sq('b5').to_s.should eq 'wb@b5'
+            zboard.piece_by_sq('e5').to_s.should eq 'bq@e5'
+            zboard.piece_by_sq('d7').to_s.should eq 'bb@d7'
+            zboard.piece_by_sq('b7').to_s.should eq 'wr@b7'
+            expect { zboard.add('wb@e5') }.to raise_error(MoveException)
         end
     end
 

@@ -281,7 +281,7 @@ class Board
         @board[orriginal_sq] = nil
     end
 
-     def take(piece_or_sq)
+    def take(piece_or_sq)
         #removes piece P (piece at SQ) from the board
         if piece_or_sq.instance_of? String
             piece = piece_by_sq(piece_or_sq)
@@ -309,8 +309,77 @@ class Board
         # if we del piece, and then undo by creating new one, some iterations over lists of pieces break
         # it's better to keep the piece reference in the undo data
     end
+
+    def add(piece_or_sq, color='', type='')
+        # adds piece to the board
+        ## changed variables order compared to the Python version, to allow passing object without the need of using named vaiable
+        if piece_or_sq.instance_of? String
+            target_sq = piece_or_sq
+            if color == '' and type == '' # reads convention wq@g8
+                target_sq = piece_or_sq[-2] + piece_or_sq[-1]
+                type = piece_or_sq[1]
+                color = piece_or_sq[0]
+            else
+                target_sq = piece_or_sq
+            end
+            if piece_by_sq(target_sq) != nil
+                msg = "Trying to move the air at #{piece_or_sq}"
+                debug(msg)
+                debug
+                raise MoveException, msg
+            end
+            piece = Piece.new color, type, target_sq
+        else # reuse piece that has been taken off the board
+            piece = piece_or_sq
+        end
+        if color == 'w'
+            @whites << piece
+        else
+            @blacks << piece
+        end
+        #the following code covers for the boardify:
+        @board[piece.square] = piece.color + piece.type
+    end
 end
 
+#     def add(self,col,tip='',piece_or_sq=''):
+#         if type(piece_or_sq) == str:
+#             sq = piece_or_sq
+#             if tip=='' and sq=='': # reads convention wq@g8
+#                 sq = col[-2:]
+#                 tip = col[1]
+#                 col = col[0]
+
+#             if self.piece_by_sq(sq) != None:
+#                 msg = 'Are you blind - there is another piece at that spot: '+repr(self.piece_by_sq(tosq))
+#                 raise MoveException(msg)
+#             #print(col,tip,sq)
+#             # creates new piece
+#             p = piece(col,tip,sq)
+
+#         else: # i.e. piece_or_sq referrs to piece object
+#             
+#             p = piece_or_sq
+#             col= p.col
+
+#         if col == 'w':
+#             self.whites.append(p)
+#         else:
+#             self.blacks.append(p)
+
+#         #the following code covers for the boardify:
+#         self.board[p.sq]=p.col+p.type
+#         #print '. piece',p,'p on board',self.board[p.sq]
+
+###########################################################################################################################################
+###########################################################################################################################################
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+#   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   #   
+#  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+ # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+###########################################################################################################################################
+###########################################################################################################################################
 # class board():
 #     def __init__(self,board_state='',winch=False,binch=False):
 #         self.whites = []

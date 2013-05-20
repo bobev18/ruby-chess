@@ -1,4 +1,5 @@
 #piece_spec.rb
+require "rspec"
 require './piece.rb'
 
 PLAIN_BOARD = {'a8' => 'br', 'b8' => nil, 'c8' => 'bb', 'd8' => 'bq', 'e8' => 'bk', 'f8' => 'bb', 'g8' => 'bn', 'h8' => 'br',
