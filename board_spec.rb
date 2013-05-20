@@ -3,6 +3,9 @@ require "rspec"
 require './board.rb'
 
 TEST_BOARD1 = {'h8' => nil, 'h2' => nil, 'h3' => nil, 'h1' => 'wr', 'h6' => nil, 'h7' => 'wp', 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => nil, 'd7' => 'bp', 'd4' => nil, 'd5' => nil, 'd2' => 'wp', 'd3' => nil, 'd1' => 'wq', 'g7' => 'bp', 'g6' => nil, 'g5' => 'wp', 'g4' => nil, 'g3' => nil, 'g2' => nil, 'g1' => nil, 'g8' => 'bn', 'c8' => 'bb', 'c3' => 'bn', 'c2' => 'wp', 'c1' => 'wb', 'c7' => 'bp', 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => 'wb', 'f2' => 'wp', 'f3' => nil, 'f4' => nil, 'f5' => 'bp', 'f6' => nil, 'f7' => nil, 'f8' => 'bb', 'b4' => nil, 'b5' => nil, 'b6' => nil, 'b7' => 'bp', 'b1' => 'wn', 'b2' => 'wp', 'b3' => nil, 'b8' => nil, 'a1' => 'wr', 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => 'bk', 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => 'wn', 'e7' => 'bp', 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => 'wp', 'a4' => nil}
+TEST_BOARD2 = {'h8' => nil, 'h2' => nil, 'h3' => nil, 'h1' => 'wr', 'h6' => nil, 'h7' => nil, 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => nil, 'd7' => 'bb', 'd4' => nil, 'd5' => nil, 'd2' => nil, 'd3' => nil, 'd1' => 'wq', 'g7' => nil, 'g6' => nil, 'g5' => nil, 'g4' => nil, 'g3' => nil, 'g2' => nil, 'g1' => nil, 'g8' => 'bn', 'c8' => 'bb', 'c3' => 'bn', 'c2' => nil, 'c1' => 'wb', 'c7' => nil, 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => 'wb', 'f2' => nil, 'f3' => nil, 'f4' => nil, 'f5' => nil, 'f6' => nil, 'f7' => nil, 'f8' => 'bb', 'b4' => nil, 'b5' => 'wb', 'b6' => nil, 'b7' => 'wr', 'b1' => 'wn', 'b2' => nil, 'b3' => nil, 'b8' => nil, 'a1' => 'wr', 'a3' => nil, 'a2' => nil, 'a5' => nil, 'e8' => 'bk', 'a7' => nil, 'a6' => nil, 'e5' => 'bq', 'e4' => nil, 'e7' => nil, 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => nil, 'a4' => nil}
+TEST_BOARD3 = {'h8' => 'br', 'h2' => 'wp', 'h3' => nil, 'h1' => 'wr', 'h6' => 'bn', 'h7' => 'bp', 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => 'bp', 'd7' => nil, 'd4' => nil, 'd5' => nil, 'd2' => 'wp', 'd3' => nil, 'd1' => 'wq', 'g7' => 'bp', 'g6' => nil, 'g5' => nil, 'g4' => nil, 'g3' => nil, 'g2' => 'wp', 'g1' => 'wn', 'g8' => nil, 'c8' => 'bb', 'c3' => nil, 'c2' => 'wp', 'c1' => 'wb', 'c7' => 'bp', 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => nil, 'f2' => 'wp', 'f3' => nil, 'f4' => nil, 'f5' => nil, 'f6' => nil, 'f7' => 'bp', 'f8' => 'bb', 'b4' => nil, 'b5' => 'wb', 'b6' => nil, 'b7' => 'bp', 'b1' => 'wn', 'b2' => 'wp', 'b3' => nil, 'b8' => 'bn', 'a1' => 'wr', 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => 'bk', 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => 'wp', 'e7' => 'bp', 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => nil, 'a4' => nil}
+TEST_BOARD4 = {'h8' => nil, 'h2' => nil, 'h3' => 'wp', 'h1' => 'wr', 'h6' => nil, 'h7' => 'bp', 'h4' => nil, 'h5' => nil, 'd8' => 'bk', 'a8' => 'br', 'd6' => 'wp', 'd7' => nil, 'd4' => nil, 'd5' => nil, 'd2' => nil, 'd3' => nil, 'd1' => 'wr', 'g7' => 'bq', 'g6' => nil, 'g5' => nil, 'g4' => nil, 'g3' => 'wp', 'g2' => 'wp', 'g1' => nil, 'g8' => nil, 'c8' => 'bb', 'c3' => 'wn', 'c2' => 'wp', 'c1' => 'wk', 'c7' => nil, 'c6' => 'bp', 'c5' => nil, 'c4' => nil, 'f1' => nil, 'f2' => nil, 'f3' => 'wq', 'f4' => nil, 'f5' => nil, 'f6' => nil, 'f7' => 'wb', 'f8' => nil, 'b4' => nil, 'b5' => nil, 'b6' => nil, 'b7' => 'bp', 'b1' => nil, 'b2' => 'wp', 'b3' => nil, 'b8' => 'bn', 'a1' => nil, 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => nil, 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => nil, 'e7' => 'bp', 'e6' => nil, 'e1' => nil, 'e3' => nil, 'e2' => nil, 'a4' => nil}
 
 describe Board do
     describe '#show' do
@@ -99,42 +102,36 @@ describe Board do
         end
     end
 
+    describe '#sq_in_check' do
+        it 'verifies if a sq is in check' do
+            zboard = Board.new
+            zboard.piecefy(TEST_BOARD2)
+            # puts zboard.show
+            # """
+            # |br|  |bb|bq|bk|bb|bn|  |
+            # |  |wr|  |bb|  |  |  |  |
+            # |  |  |  |  |  |  |  |  |
+            # |  |wb|  |  |bq|  |  |  |
+            # |  |  |  |  |  |  |  |  |
+            # |  |  |bn|  |  |  |  |  |
+            # |  |  |  |  |  |  |  |  |
+            # |wr|wn|wb|wq|wk|wb|  |wr|
+            # """
+            zboard.sq_in_check('e1','b').should be_true
+            zboard.sq_in_check('f2','b').should be_true
+            zboard.sq_in_check('d2','b').should be_false
+            zboard.piecefy(TEST_BOARD3)
+            zboard.sq_in_check('e8','w').should be_true
+
+            ##### the test below was under #sq_in_check, but should be moved to #valids
+            # zboard.piecefy(TEST_BOARD4)
+            # self.assertFalse(('m', 'c7', 'Kc7')in self.zboard.valids(self.zboard.piece_by_sq('d8')))
+        end
+    end
+
+
+
 end
-
-
-
-#     def test_moves_n_takes(self):
-#         self.zboard.initialset()
-
-
-
-#     def test_add(self):
-#         self.zboard.piecefy({'h8': '  ', 'h2': '  ', 'h3': '  ', 'h1': 'wr', 'h6': '  ', 'h7': 'wp', 'h4': '  ', 'h5': '  ', 'd8': 'bq', 'a8': 'br', 'd6': '  ', 'd7': 'bp', 'd4': '  ', 'd5': '  ', 'd2': 'wp', 'd3': '  ', 'd1': 'wq', 'g7': 'bp', 'g6': '  ', 'g5': 'wp', 'g4': '  ', 'g3': '  ', 'g2': '  ', 'g1': '  ', 'g8': 'bn', 'c8': 'bb', 'c3': 'bn', 'c2': 'wp', 'c1': 'wb', 'c7': 'bp', 'c6': '  ', 'c5': '  ', 'c4': '  ', 'f1': 'wb', 'f2': 'wp', 'f3': '  ', 'f4': '  ', 'f5': 'bp', 'f6': '  ', 'f7': '  ', 'f8': 'bb', 'b4': '  ', 'b5': '  ', 'b6': '  ', 'b7': 'bp', 'b1': 'wn', 'b2': 'wp', 'b3': '  ', 'b8': '  ', 'a1': 'wr', 'a3': '  ', 'a2': 'wp', 'a5': '  ', 'e8': 'bk', 'a7': 'bp', 'a6': '  ', 'e5': '  ', 'e4': 'wn', 'e7': 'bp', 'e6': '  ', 'e1': 'wk', 'e3': '  ', 'e2': 'wp', 'a4': '  '})
-#         for p in self.zboard.fullset():
-#             if p.type == 'p':
-#                 self.zboard.take(p)
-
-#         self.zboard.add('w','b','b5')
-#         self.zboard.add('bq@e5')
-#         self.zboard.add('bb@d7')
-#         self.zboard.add('wr@b7')
-#         #self.zboard.boardify()
-#         #print(self.zboard.board)
-#         self.assertEqual('wb@b5',repr(self.zboard.piece_by_sq('b5')))
-#         self.assertEqual('bq@e5',repr(self.zboard.piece_by_sq('e5')))
-#         self.assertEqual('bb@d7',repr(self.zboard.piece_by_sq('d7')))
-#         self.assertEqual('wr@b7',repr(self.zboard.piece_by_sq('b7')))
-
-
-
-
-#     def test_2pieces_1spot_n_moving_air(self):
-#         self.zboard.piecefy({'h8': '  ', 'h2': '  ', 'h3': '  ', 'h1': 'wr', 'h6': '  ', 'h7': '  ', 'h4': '  ', 'h5': '  ', 'd8': 'bq', 'a8': 'br', 'd6': '  ', 'd7': 'bb', 'd4': '  ', 'd5': '  ', 'd2': '  ', 'd3': '  ', 'd1': 'wq', 'g7': '  ', 'g6': '  ', 'g5': '  ', 'g4': '  ', 'g3': '  ', 'g2': '  ', 'g1': '  ', 'g8': 'bn', 'c8': 'bb', 'c3': 'bn', 'c2': '  ', 'c1': 'wb', 'c7': '  ', 'c6': '  ', 'c5': '  ', 'c4': '  ', 'f1': 'wb', 'f2': '  ', 'f3': '  ', 'f4': '  ', 'f5': '  ', 'f6': '  ', 'f7': '  ', 'f8': 'bb', 'b4': '  ', 'b5': 'wb', 'b6': '  ', 'b7': 'wr', 'b1': 'wn', 'b2': '  ', 'b3': '  ', 'b8': '  ', 'a1': 'wr', 'a3': '  ', 'a2': '  ', 'a5': '  ', 'e8': 'bk', 'a7': '  ', 'a6': '  ', 'e5': 'bq', 'e4': 'wn', 'e7': '  ', 'e6': '  ', 'e1': 'wk', 'e3': '  ', 'e2': '  ', 'a4': '  '})
-#         #print(self.zboard.piece_by_sq('c3'))
-#         #self.zboard.relocate('c8','c3')
-#         #self.zboard.relocate('b8','b6')
-#         self.assertRaises(chesslib.MoveException, self.zboard.relocate,'c8','c3')
-#         self.assertRaises(chesslib.MoveException, self.zboard.relocate,'b8','b6')
 
 #     def test_incheck_checks(self):
 #         self.zboard.piecefy({'h8': '  ', 'h2': '  ', 'h3': '  ', 'h1': 'wr', 'h6': '  ', 'h7': '  ', 'h4': '  ', 'h5': '  ', 'd8': 'bq', 'a8': 'br', 'd6': '  ', 'd7': 'bb', 'd4': '  ', 'd5': '  ', 'd2': '  ', 'd3': '  ', 'd1': 'wq', 'g7': '  ', 'g6': '  ', 'g5': '  ', 'g4': '  ', 'g3': '  ', 'g2': '  ', 'g1': '  ', 'g8': 'bn', 'c8': 'bb', 'c3': 'bn', 'c2': '  ', 'c1': 'wb', 'c7': '  ', 'c6': '  ', 'c5': '  ', 'c4': '  ', 'f1': 'wb', 'f2': '  ', 'f3': '  ', 'f4': '  ', 'f5': '  ', 'f6': '  ', 'f7': '  ', 'f8': 'bb', 'b4': '  ', 'b5': 'wb', 'b6': '  ', 'b7': 'wr', 'b1': 'wn', 'b2': '  ', 'b3': '  ', 'b8': '  ', 'a1': 'wr', 'a3': '  ', 'a2': '  ', 'a5': '  ', 'e8': 'bk', 'a7': '  ', 'a6': '  ', 'e5': 'bq', 'e4': '  ', 'e7': '  ', 'e6': '  ', 'e1': 'wk', 'e3': '  ', 'e2': '  ', 'a4': '  '})
