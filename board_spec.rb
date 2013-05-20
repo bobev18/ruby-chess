@@ -118,10 +118,15 @@ describe Board do
             # |wr|wn|wb|wq|wk|wb|  |wr|
             # """
             zboard.sq_in_check('e1','b').should be_true
-            zboard.sq_in_check('f2','b').should be_true
+            zboard.sq_in_check('e2','b').should be_true
+            zboard.sq_in_check('f2','b').should be_false
             zboard.sq_in_check('d2','b').should be_false
             zboard.piecefy(TEST_BOARD3)
             zboard.sq_in_check('e8','w').should be_true
+
+            # TODO:
+            # add check of the full check map of bothe BOARD 2 & 3 i.e. validate every square result
+
 
             ##### the test below was under #sq_in_check, but should be moved to #valids
             # zboard.piecefy(TEST_BOARD4)

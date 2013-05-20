@@ -142,6 +142,9 @@ BMAP = {
 
 class MoveException < StandardError
 end
+
+class UncathegorizedException < StandardError
+end
 #     def __init__(self, *args):
 #         # *args is used to get a list of the parameters passed in
 #         self.args = [a for a in args]
@@ -340,36 +343,127 @@ class Board
         #the following code covers for the boardify:
         @board[piece.square] = piece.color + piece.type
     end
+
+    def sq_in_check(target_square, by_color, board_state = nil)
+        debug
+        if not board_state then board_state = @board end
+        results = false
+        if target_square == ''
+            msg = "Trying to verify check on erroneous square #{target_square}"
+            debug(msg)
+            debug
+            raise UncathegorizedException, msg
+        end
+
+        # find check by knight
+        BMAP[target_square]['knight'].each do |square|
+            return true if board_state[square] == by_color + 'n'
+        end
+
+        # find check by pawn
+        if by_color == 'w' then
+            BMAP[target_square]['wpawn'].each do |square|
+                return true if board_state[square] == 'wp'
+            end
+        else
+           BMAP[target_square]['bpawn'].each do |square|
+                return true if board_state[square] == 'bp'
+            end
+        end
+
+        # find check by king
+        BMAP[target_square]['king'].each do |square|
+            return true if board_state[square] == by_color + 'k'
+        end
+
+        # find check in files and ranks (by queen and rook)
+        ['N','E','S','W'].each do |direction|
+            0.upto(BMAP[target_square][direction].size) do |square_index|
+                square = BMAP[target_square][direction][square_index]
+                debug(message = "#{square_index}) loop square: #{square}; board_state[loop square]: #{board_state[square]}")
+                if board_state[square]
+                    return true if board_state[square] == by_color + 'q' or board_state[square] == by_color + 'r'
+                    break # the direction is blocked if an enemy piece doesnt operate in that direction or own piece
+                end
+            end
+        end
+
+        # find check in diagonals (by queen and bishop)
+        ['NE','SE','SW','NW'].each do |direction|
+            0.upto(BMAP[target_square][direction].size) do |square_index|
+                square = BMAP[target_square][direction][square_index]
+                debug(message = "#{square_index}) loop square: #{square}; board_state[loop square]: #{board_state[square]}")
+                if board_state[square]
+                    return true if board_state[square] == by_color + 'q' or board_state[square] == by_color + 'b'
+                    break # the direction is blocked if an enemy piece doesnt operate in that direction or own piece
+                end
+            end
+        end
+        false
+    end
+
 end
 
-#     def add(self,col,tip='',piece_or_sq=''):
-#         if type(piece_or_sq) == str:
-#             sq = piece_or_sq
-#             if tip=='' and sq=='': # reads convention wq@g8
-#                 sq = col[-2:]
-#                 tip = col[1]
-#                 col = col[0]
-
-#             if self.piece_by_sq(sq) != None:
-#                 msg = 'Are you blind - there is another piece at that spot: '+repr(self.piece_by_sq(tosq))
-#                 raise MoveException(msg)
-#             #print(col,tip,sq)
-#             # creates new piece
-#             p = piece(col,tip,sq)
-
-#         else: # i.e. piece_or_sq referrs to piece object
-#             
-#             p = piece_or_sq
-#             col= p.col
-
-#         if col == 'w':
-#             self.whites.append(p)
+#     def sq_in_check(self,sq,by_col,b_state='',verbose=0):
+#         if verbose >0:
+#             print 30*'[]'+sq+'|'+by_col
+#         if 1==0 and sq=='e8' and by_col=='w':
+#             print '\n---------------'
+#             print 'sq',sq,'by col',by_col
+#             verbose = 1
 #         else:
-#             self.blacks.append(p)
+#             verbose = 0
 
-#         #the following code covers for the boardify:
-#         self.board[p.sq]=p.col+p.type
-#         #print '. piece',p,'p on board',self.board[p.sq]
+#         if b_state=='':
+#             board_state = self.board
+#         else:
+#             board_state = b_state
+
+#         rez = False
+#         if sq=='':
+#             print self.show(board_state)
+#             print 'sq',sq, 'by',by_col
+
+#         for dsq in bmap[sq]['knight']:
+#             if board_state[dsq] == by_col+'n':
+#                 return True
+
+#         if by_col == 'w':
+#             for dsq in bmap[sq]['wpawn']:
+#                 if board_state[dsq] == 'wp':
+#                     return True
+
+#         else: #by_col == 'b':
+#             for dsq in bmap[sq]['bpawn']:
+#                 if board_state[dsq] == 'bp':
+#                     return True
+
+#         for dsq in bmap[sq]['king']:
+#             if board_state[dsq] == by_col+'k':
+#                 return True
+
+#         for d in ['N','E','S','W']:
+#             for i in range(len(bmap[sq][d])):
+#                 dsq = bmap[sq][d][i]
+#                 if verbose>0:
+#                     print i,')','dsq',dsq,'board_state[dsq]',board_state[dsq]
+#                 if board_state[dsq] != '  ':
+#                     if board_state[dsq] == by_col+'q' or board_state[dsq] == by_col+'r':
+#                         return True # relevant displacement operator at distance i
+#                     break # the direction is blocked if an enemy piece doesnt operate in that direction or own piece
+
+#         for d in ['NE','SE','SW','NW']:
+#             for i in range(len(bmap[sq][d])):
+#                 dsq = bmap[sq][d][i]
+#                 if board_state[dsq] != '  ':
+#                     if board_state[dsq] == by_col+'q' or board_state[dsq] == by_col+'b':
+#                         return True # relevant displacement operator at distance i
+#                     break # the direction is blocked if an enemy piece doesnt operate in that direction or own piece
+
+
+
+
+#         return False
 
 ###########################################################################################################################################
 ###########################################################################################################################################
