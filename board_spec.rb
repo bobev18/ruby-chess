@@ -4,7 +4,10 @@ require './board.rb'
 
 TEST_BOARD1 = {'h8' => nil, 'h2' => nil, 'h3' => nil, 'h1' => 'wr', 'h6' => nil, 'h7' => 'wp', 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => nil, 'd7' => 'bp', 'd4' => nil, 'd5' => nil, 'd2' => 'wp', 'd3' => nil, 'd1' => 'wq', 'g7' => 'bp', 'g6' => nil, 'g5' => 'wp', 'g4' => nil, 'g3' => nil, 'g2' => nil, 'g1' => nil, 'g8' => 'bn', 'c8' => 'bb', 'c3' => 'bn', 'c2' => 'wp', 'c1' => 'wb', 'c7' => 'bp', 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => 'wb', 'f2' => 'wp', 'f3' => nil, 'f4' => nil, 'f5' => 'bp', 'f6' => nil, 'f7' => nil, 'f8' => 'bb', 'b4' => nil, 'b5' => nil, 'b6' => nil, 'b7' => 'bp', 'b1' => 'wn', 'b2' => 'wp', 'b3' => nil, 'b8' => nil, 'a1' => 'wr', 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => 'bk', 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => 'wn', 'e7' => 'bp', 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => 'wp', 'a4' => nil}
 TEST_BOARD2 = {'h8' => nil, 'h2' => nil, 'h3' => nil, 'h1' => 'wr', 'h6' => nil, 'h7' => nil, 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => nil, 'd7' => 'bb', 'd4' => nil, 'd5' => nil, 'd2' => nil, 'd3' => nil, 'd1' => 'wq', 'g7' => nil, 'g6' => nil, 'g5' => nil, 'g4' => nil, 'g3' => nil, 'g2' => nil, 'g1' => nil, 'g8' => 'bn', 'c8' => 'bb', 'c3' => 'bn', 'c2' => nil, 'c1' => 'wb', 'c7' => nil, 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => 'wb', 'f2' => nil, 'f3' => nil, 'f4' => nil, 'f5' => nil, 'f6' => nil, 'f7' => nil, 'f8' => 'bb', 'b4' => nil, 'b5' => 'wb', 'b6' => nil, 'b7' => 'wr', 'b1' => 'wn', 'b2' => nil, 'b3' => nil, 'b8' => nil, 'a1' => 'wr', 'a3' => nil, 'a2' => nil, 'a5' => nil, 'e8' => 'bk', 'a7' => nil, 'a6' => nil, 'e5' => 'bq', 'e4' => nil, 'e7' => nil, 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => nil, 'a4' => nil}
+TEST_RESULT2W = {"a1"=>false, "a2"=>true, "a3"=>true, "a4"=>true, "a5"=>true, "a6"=>true, "a7"=>true, "a8"=>true, "b1"=>true, "b2"=>true, "b3"=>true, "b4"=>false, "b5"=>true, "b6"=>true, "b7"=>false, "b8"=>true, "c1"=>true, "c2"=>true, "c3"=>true, "c4"=>true, "c5"=>false, "c6"=>true, "c7"=>true, "c8"=>false, "d1"=>true, "d2"=>true, "d3"=>true, "d4"=>true, "d5"=>true, "d6"=>true, "d7"=>true, "d8"=>false, "e1"=>true, "e2"=>true, "e3"=>true, "e4"=>false, "e5"=>false, "e6"=>false, "e7"=>false, "e8"=>false, "f1"=>true, "f2"=>true, "f3"=>true, "f4"=>true, "f5"=>false, "f6"=>false, "f7"=>false, "f8"=>false, "g1"=>true, "g2"=>true, "g3"=>false, "g4"=>true, "g5"=>true, "g6"=>false, "g7"=>false, "g8"=>false, "h1"=>false, "h2"=>true, "h3"=>true, "h4"=>true, "h5"=>true, "h6"=>true, "h7"=>true, "h8"=>true}
 TEST_BOARD3 = {'h8' => 'br', 'h2' => 'wp', 'h3' => nil, 'h1' => 'wr', 'h6' => 'bn', 'h7' => 'bp', 'h4' => nil, 'h5' => nil, 'd8' => 'bq', 'a8' => 'br', 'd6' => 'bp', 'd7' => nil, 'd4' => nil, 'd5' => nil, 'd2' => 'wp', 'd3' => nil, 'd1' => 'wq', 'g7' => 'bp', 'g6' => nil, 'g5' => nil, 'g4' => nil, 'g3' => nil, 'g2' => 'wp', 'g1' => 'wn', 'g8' => nil, 'c8' => 'bb', 'c3' => nil, 'c2' => 'wp', 'c1' => 'wb', 'c7' => 'bp', 'c6' => nil, 'c5' => nil, 'c4' => nil, 'f1' => nil, 'f2' => 'wp', 'f3' => nil, 'f4' => nil, 'f5' => nil, 'f6' => nil, 'f7' => 'bp', 'f8' => 'bb', 'b4' => nil, 'b5' => 'wb', 'b6' => nil, 'b7' => 'bp', 'b1' => 'wn', 'b2' => 'wp', 'b3' => nil, 'b8' => 'bn', 'a1' => 'wr', 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => 'bk', 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => 'wp', 'e7' => 'bp', 'e6' => nil, 'e1' => 'wk', 'e3' => nil, 'e2' => nil, 'a4' => nil}
+TEST_RESULT3W = {"a1"=>false, "a2"=>true, "a3"=>true, "a4"=>true, "a5"=>false, "a6"=>true, "a7"=>false, "a8"=>false, "b1"=>true, "b2"=>true, "b3"=>true, "b4"=>false, "b5"=>false, "b6"=>false, "b7"=>false, "b8"=>false, "c1"=>true, "c2"=>true, "c3"=>true, "c4"=>true, "c5"=>false, "c6"=>true, "c7"=>false, "c8"=>false, "d1"=>true, "d2"=>true, "d3"=>true, "d4"=>false, "d5"=>true, "d6"=>false, "d7"=>true, "d8"=>false, "e1"=>true, "e2"=>true, "e3"=>true, "e4"=>false, "e5"=>false, "e6"=>false, "e7"=>false, "e8"=>true, "f1"=>true, "f2"=>true, "f3"=>true, "f4"=>false, "f5"=>true, "f6"=>false, "f7"=>false, "f8"=>false, "g1"=>true, "g2"=>false, "g3"=>true, "g4"=>true, "g5"=>false, "g6"=>false, "g7"=>false, "g8"=>false, "h1"=>false, "h2"=>true, "h3"=>true, "h4"=>false, "h5"=>true, "h6"=>false, "h7"=>false, "h8"=>false}
+TEST_RESULT3B = {"a1"=>false, "a2"=>false, "a3"=>false, "a4"=>false, "a5"=>false, "a6"=>true, "a7"=>true, "a8"=>false, "b1"=>false, "b2"=>false, "b3"=>false, "b4"=>false, "b5"=>false, "b6"=>true, "b7"=>true, "b8"=>true, "c1"=>false, "c2"=>false, "c3"=>false, "c4"=>false, "c5"=>true, "c6"=>true, "c7"=>true, "c8"=>true, "d1"=>false, "d2"=>false, "d3"=>false, "d4"=>false, "d5"=>false, "d6"=>true, "d7"=>true, "d8"=>true, "e1"=>false, "e2"=>false, "e3"=>false, "e4"=>false, "e5"=>true, "e6"=>true, "e7"=>true, "e8"=>true, "f1"=>false, "f2"=>false, "f3"=>false, "f4"=>false, "f5"=>true, "f6"=>true, "f7"=>true, "f8"=>true, "g1"=>false, "g2"=>false, "g3"=>false, "g4"=>true, "g5"=>false, "g6"=>true, "g7"=>true, "g8"=>true, "h1"=>false, "h2"=>false, "h3"=>true, "h4"=>false, "h5"=>false, "h6"=>true, "h7"=>true, "h8"=>false}
 TEST_BOARD4 = {'h8' => nil, 'h2' => nil, 'h3' => 'wp', 'h1' => 'wr', 'h6' => nil, 'h7' => 'bp', 'h4' => nil, 'h5' => nil, 'd8' => 'bk', 'a8' => 'br', 'd6' => 'wp', 'd7' => nil, 'd4' => nil, 'd5' => nil, 'd2' => nil, 'd3' => nil, 'd1' => 'wr', 'g7' => 'bq', 'g6' => nil, 'g5' => nil, 'g4' => nil, 'g3' => 'wp', 'g2' => 'wp', 'g1' => nil, 'g8' => nil, 'c8' => 'bb', 'c3' => 'wn', 'c2' => 'wp', 'c1' => 'wk', 'c7' => nil, 'c6' => 'bp', 'c5' => nil, 'c4' => nil, 'f1' => nil, 'f2' => nil, 'f3' => 'wq', 'f4' => nil, 'f5' => nil, 'f6' => nil, 'f7' => 'wb', 'f8' => nil, 'b4' => nil, 'b5' => nil, 'b6' => nil, 'b7' => 'bp', 'b1' => nil, 'b2' => 'wp', 'b3' => nil, 'b8' => 'bn', 'a1' => nil, 'a3' => nil, 'a2' => 'wp', 'a5' => nil, 'e8' => nil, 'a7' => 'bp', 'a6' => nil, 'e5' => nil, 'e4' => nil, 'e7' => 'bp', 'e6' => nil, 'e1' => nil, 'e3' => nil, 'e2' => nil, 'a4' => nil}
 
 describe Board do
@@ -105,9 +108,9 @@ describe Board do
     describe '#sq_in_check' do
         it 'verifies if a sq is in check' do
             zboard = Board.new
+            # testing with BOARD2
             zboard.piecefy(TEST_BOARD2)
             # puts zboard.show
-            # """
             # |br|  |bb|bq|bk|bb|bn|  |
             # |  |wr|  |bb|  |  |  |  |
             # |  |  |  |  |  |  |  |  |
@@ -116,16 +119,52 @@ describe Board do
             # |  |  |bn|  |  |  |  |  |
             # |  |  |  |  |  |  |  |  |
             # |wr|wn|wb|wq|wk|wb|  |wr|
-            # """
             zboard.sq_in_check('e1','b').should be_true
             zboard.sq_in_check('e2','b').should be_true
             zboard.sq_in_check('f2','b').should be_false
             zboard.sq_in_check('d2','b').should be_false
+            somelist = {}
+            zboard.board.each { |k,v| somelist[k]=zboard.sq_in_check(k,'w') }
+            somelist.should eq TEST_RESULT2W
+            
+
+            # testing with BOARD3
             zboard.piecefy(TEST_BOARD3)
+            # |br|bn|bb|bq|bk|bb|  |br|
+            # |bp|bp|bp|  |bp|bp|bp|bp|
+            # |  |  |  |bp|  |  |  |bn|
+            # |  |wb|  |  |  |  |  |  |
+            # |  |  |  |  |wp|  |  |  |
+            # |  |  |  |  |  |  |  |  |
+            # |wp|wp|wp|wp|  |wp|wp|wp|
+            # |wr|wn|wb|wq|wk|  |wn|wr|
             zboard.sq_in_check('e8','w').should be_true
+            somelist = {}
+            zboard.board.each { |k,v| somelist[k] = zboard.sq_in_check(k,'w') }
+            somelist.should eq TEST_RESULT3W
+
+            somelist = {}
+            zboard.board.each { |k,v| somelist[k] = zboard.sq_in_check(k,'b') }
+            somelist.should eq TEST_RESULT3B
+
+            # # puts somelist
+            # result = "\n"
+            # 8.downto(1) do |i|
+            #     result += "|"
+            #     97.upto(104) do |j|
+            
+            #         addition = somelist[j.chr() + i.to_s] ? " t" : "  "
+            #         result +=  addition + "|"
+            #     end
+            #     result += "\n" # -- -- -- -- -- -- -- --\n"
+            # end
+            # puts result
+            # ss = somelist.to_s[1..-1]
+            # box = ss.split(', ')
+            # puts box.sort!.map! { |k| "#{k}" }.join(", ")
 
             # TODO:
-            # add check of the full check map of bothe BOARD 2 & 3 i.e. validate every square result
+            # add check of the full check map of both BOARDs 2 & 3 i.e. validate every square result
 
 
             ##### the test below was under #sq_in_check, but should be moved to #valids
